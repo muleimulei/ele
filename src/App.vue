@@ -1,23 +1,52 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <router-view></router-view>
+   <appHead></appHead>
+   <div class="tab">
+     <div class="item-tab">
+        <router-link to="/goods">商品</router-link>
+     </div>
+     <div class="item-tab">
+        <router-link to="/ratings">评论</router-link>
+     </div>
+     <div class="item-tab">
+        <router-link to="/sellers">商家</router-link>
+     </div>
+   </div>
+   <router-view></router-view>
   </div>
 </template>
 
 <script>
+import appHead from './components/header/header.vue'
 export default {
-  name: 'app'
+  name: 'app',
+  components: {
+    appHead
+  }
 }
 </script>
 
-<style>
+<style lang='less'>
+@import 'common/less/index.less';
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  .tab{
+    display: flex;
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    .border-1px(rgba(7, 17, 27, 0.1));
+    .item-tab{
+      text-align: center;
+      flex: 1;
+      a {
+        display: block;
+        font-size: 14px;
+        color: rgb(77, 85, 93);
+        &.active{
+          color: rgb(240, 20, 20);
+        }
+      }
+    }
+  }
 }
 </style>

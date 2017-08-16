@@ -1,15 +1,29 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Hello from '@/components/Hello'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
-      path: '/',
-      name: 'Hello',
-      component: Hello
+      path: '/goods',
+      name: 'goods',
+      component: require('../components/goods/goods.vue')
+    },
+    {
+      path: '/ratings',
+      name: 'ratings',
+      component: require('../components/ratings/ratings.vue')
+    },
+    {
+      path: '/sellers',
+      name: '/sellers',
+      component: require('../components/sellers/sellers.vue')
+    },
+    {
+      path: '*',
+      redirect: {name: 'goods'}
     }
-  ]
+  ],
+  linkActiveClass: 'active'
 })
