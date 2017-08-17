@@ -1,3 +1,9 @@
+body, html{
+  line-height: 1;
+  font-weight: 200;
+  font-family: 'PingFang SC', 'STHeightSC-Light', 'Helvetice-Light', arial, sans-serif;
+}
+
 
 .border-1px(@color) {
   position: relative;
@@ -9,5 +15,13 @@
     border-bottom: 1px solid @color;
     content: '';
     width: 100%;
+  }
+}
+
+@baseURL : '../../components/header/';
+.bg-image(@url){
+  background-image: url("@{baseURL}@{url}@2x.png");
+  @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3){
+    background-image: url("@{baseURL}@{url}@3x.png");
   }
 }

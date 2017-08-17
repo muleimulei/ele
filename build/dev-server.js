@@ -23,6 +23,7 @@ var proxyTable = config.dev.proxyTable
 var app = express()
 var selldata = require('../data.json')
 var apirouter = express.Router()
+app.use('/api', apirouter)
 apirouter.get('/goods', function (req, res, next) {
   res.json({
     errno: 0,
@@ -30,7 +31,7 @@ apirouter.get('/goods', function (req, res, next) {
   })
 })
 
-apirouter.get('/seller', function (req, res, next) {
+apirouter.get('/sellers', function (req, res, next) {
   res.json({
     errno: 0,
     data: selldata.seller
@@ -44,7 +45,6 @@ apirouter.get('/ratings', function (req, res, next) {
   })
 })
 
-app.use('/api', apirouter)
 
 var compiler = webpack(webpackConfig)
 

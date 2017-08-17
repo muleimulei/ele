@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-   <appHead></appHead>
+   <appHead :seller = "seller"></appHead>
    <div class="tab">
      <div class="item-tab">
         <router-link to="/goods">商品</router-link>
@@ -18,10 +18,25 @@
 
 <script>
 import appHead from './components/header/header.vue'
+const ERR_OK = 0
 export default {
   name: 'app',
   components: {
     appHead
+  },
+  data () {
+    return {
+      seller: {}
+    }
+  },
+  created () {
+    this.$http.get('/api/sellers').then((response) => {
+      // console.log(response)
+      response = response.data
+      if (response.errno === ERR_OK) {
+        this.seller = response.data
+      }
+    })
   }
 }
 </script>
