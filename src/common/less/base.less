@@ -15,3 +15,15 @@
     }
   }
 }
+
+.clearfix{
+  display: inline-block;
+  &::after{
+    display: block;
+    content: '';
+    width: 0;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+  }
+}
