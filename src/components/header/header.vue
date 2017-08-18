@@ -30,16 +30,9 @@
       <img :src="seller.avatar" width="100%" height="100%">
     </div>
     <div v-show="detailshow" class="detail">
-      <div class="detail-wrapper clearfix">
+      <div class="detail-wrapper">
         <div class="detail-main">
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Exercitationem et aspernatur, perferendis impedit sint nisi, a ipsam quibusdam id autem iste repudiandae fugit ullam mollitia deserunt vel ex doloribus totam.</p>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil officia aut nobis, veritatis necessitatibus minus aliquam? Voluptatem provident labore quo, inventore, exercitationem assumenda, cumque dignissimos, a culpa minima voluptatibus cupiditate!</p>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Exercitationem et aspernatur, perferendis impedit sint nisi, a ipsam quibusdam id autem iste repudiandae fugit ullam mollitia deserunt vel ex doloribus totam.</p>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil officia aut nobis, veritatis necessitatibus minus aliquam? Voluptatem provident labore quo, inventore, exercitationem assumenda, cumque dignissimos, a culpa minima voluptatibus cupiditate!</p>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Exercitationem et aspernatur, perferendis impedit sint nisi, a ipsam quibusdam id autem iste repudiandae fugit ullam mollitia deserunt vel ex doloribus totam.</p>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil officia aut nobis, veritatis necessitatibus minus aliquam? Voluptatem provident labore quo, inventore, exercitationem assumenda, cumque dignissimos, a culpa minima voluptatibus cupiditate!</p>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Exercitationem et aspernatur, perferendis impedit sint nisi, a ipsam quibusdam id autem iste repudiandae fugit ullam mollitia deserunt vel ex doloribus totam.</p>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil officia aut nobis, veritatis necessitatibus minus aliquam? Voluptatem provident labore quo, inventore, exercitationem assumenda, cumque dignissimos, a culpa minima voluptatibus cupiditate!</p>
+          <p class="name">{{seller.name}}</p>
         </div>
       </div>
       <div class="detail-close">
@@ -208,18 +201,26 @@
       height: 100%;
       background: rgba(7, 17, 27, 0.5);
       z-index: 1;
+      overflow: auto;
       .detail-wrapper{
         min-height: 100%;
+        overflow: auto;
         .detail-main{
           margin-top: 64px;
-          padding-bottom: 64px;
+          padding-bottom: 60px;
+          .name{
+            line-height: 16px;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 700;
+          }
         }
       }
       .detail-close{
         position: relative;
         width: 32px;
         height: 32px;
-        margin: -64px auto 0;
+        margin: -40px auto 0;
       }
     }
   }
