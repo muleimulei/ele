@@ -1,11 +1,53 @@
 <template>
-  <div>货物</div>
+  <div class="goods">
+    <div class="menu-wrapper">
+      
+    </div>
+    <div class="foods-wrapper">
+      
+    </div>
+  </div>
 </template>
 
 <script>
-    
+  const ERR_OK = 0
+  export default{
+    props: {
+      seller: Object
+    },
+    data () {
+      return {
+        goods: null
+      }
+    },
+    created () {
+      this.$http.get('/api/goods').then((response) => {
+        // console.log(response)
+        response = response.data
+        if (response.errno === ERR_OK) {
+          console.log(response.data)
+          this.goods = response.data
+        }
+      })
+    }
+  }
 </script>
 
 <style lang='less'>
-    
+  .goods{
+    display: flex;
+    position: absolute;
+    top: 174px;
+    bottom: 46px;
+    width: 100%;
+    overflow: hidden;
+    .menu-wrapper{
+      flex: 0 0 80px;
+      width: 80px;
+      background: #f3f5f7;
+    }
+    .foods-wrapper{
+      flex: 1;
+    }
+  }
 </style>
