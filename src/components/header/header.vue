@@ -29,20 +29,38 @@
     <div class="background">
       <img :src="seller.avatar" width="100%" height="100%">
     </div>
-    <div v-show="detailshow" class="detail">
-      <div class="detail-wrapper">
-        <div class="detail-main">
-          <p class="name">{{seller.name}}</p>
+    <transition name="fade">
+      <div v-show="detailshow" class="detail">
+        <div class="detail-wrapper">
+          <div class="detail-main">
+            <p class="name">{{seller.name}}</p>
+            <div class="star-wrapper">
+              <star :size="48" :score="seller.score"></star>  
+            </div>
+            <separate message="优惠信息"></separate>
+            <ul v-if="seller.supports" class="supports">
+              <li class="support-item" v-for="(item, index) in seller.supports">
+                 <span class="icon" :class="classMap[seller.supports[index].type]"></span>
+                 <span class="text">{{seller.supports[index].description}}</span>
+              </li>
+            </ul>
+            <separate message="商家公告"></separate>
+            <div class="bulletin">
+              <p class="content">{{seller.bulletin}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="detail-close">
+          <i class="icon-close" @click="hideDetail"></i>
         </div>
       </div>
-      <div class="detail-close">
-        <i class="icon-close"></i>
-      </div>
-    </div>
+    </transition>
   </div>
 </template>
 
 <script>
+  import star from '../star/star.vue'
+  import separate from '../separate/separate.vue'
   export default{
     name: 'head',
     props: {
@@ -53,7 +71,14 @@
     methods: {
       showDetail () {
         this.detailshow = true
+      },
+      hideDetail () {
+        this.detailshow = false
       }
+    },
+    components: {
+      star,
+      separate
     },
     data () {
       return {
@@ -202,6 +227,8 @@
       background: rgba(7, 17, 27, 0.5);
       z-index: 1;
       overflow: auto;
+      transition: all .5s ease;
+      backdrop-filter: blur(10px);
       .detail-wrapper{
         min-height: 100%;
         overflow: auto;
@@ -214,6 +241,59 @@
             font-size: 16px;
             font-weight: 700;
           }
+          .star-wrapper{
+            margin-top: 18px;
+            padding: 2px 0;
+            text-align: center;
+          }
+          .supports{
+            width: 80%;
+            margin: 0 auto;
+            .support-item{
+              padding: 0 12px;
+              margin-bottom: 12px;
+              font-size: 0;
+              &:last-child{
+                margin-bottom: 0;
+              }
+              .icon{
+                display: inline-block;
+                width: 16px;
+                height: 16px;
+                vertical-align: top;
+                margin-right: 6px;
+                background-size: cover;
+                &.decrease{
+                  .bg-image('decrease_1');
+                }
+                &.discount{
+                  .bg-image('discount_1');
+                }
+                &.guarantee{
+                  .bg-image('guarantee_1');
+                }
+                &.invoice{
+                  .bg-image('invoice_1');
+                }
+                &.special{
+                  .bg-image('special_1');
+                }
+              }
+              .text{
+                line-height: 16px;
+                font-size: 12px;
+              }
+            }
+          }
+          .bulletin{
+            width: 80%;
+            margin: 0 auto;
+            .content{
+              padding: 0 12px;
+              line-height: 24px;
+              font-size: 12px;
+            }
+          }
         }
       }
       .detail-close{
@@ -223,5 +303,14 @@
         margin: -40px auto 0;
       }
     }
+  }
+
+  .fade-enter-to{
+    opacity: 1;
+    background: rgba(7, 17, 27, 0.8);;
+  }
+  .fade-enter, .fade-leave-to{
+    opacity: 0;
+    background: rgba(7, 17, 27, 0);
   }
 </style>
