@@ -14,7 +14,7 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   .title{
     display: flex;
     width: 80%;
