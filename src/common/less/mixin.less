@@ -17,6 +17,18 @@ body, html{
     width: 100%;
   }
 }
+.border-0px(@color) {
+  position: relative;
+  &::after{
+    display: block;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    border-bottom: 0px solid @color;
+    content: '';
+    width: 100%;
+  }
+}
 
 // @baseURL : '../../components/header/';
 .bg-image(@url){
