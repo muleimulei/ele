@@ -21,6 +21,13 @@
         </div>
       </div>
     </div>
+    <div class="ball-container">
+      <transition-group name='drop' tag='div'>
+        <div v-for='(ball, index) in balls' :key='index' v-show="ball.show" class="ball">
+          <div class="inner"></div>
+        </div>
+      </transition-group>
+    </div>
   </div>
 </template>
 
@@ -34,6 +41,27 @@ export default{
       default () {
         return []
       }
+    }
+  },
+  data () {
+    return {
+      balls: [
+        {
+          show: false
+        },
+        {
+          show: false
+        },
+        {
+          show: false
+        },
+        {
+          show: false
+        },
+        {
+          show: false
+        }
+      ]
     }
   },
   computed: {
@@ -59,6 +87,11 @@ export default{
       } else {
         return '去结算'
       }
+    }
+  },
+  methods: {
+    drop (el) {
+      console.log(el)
     }
   }
 }
@@ -153,6 +186,22 @@ export default{
             background: #00b43c;
             color: #fff;
           }
+        }
+      }
+    }
+    .ball-container{
+      .ball{
+        position: fixed;
+        left: 32px;
+        bottom: 22px;
+        z-index: 100;
+        transition: all .4s;
+        .inner{
+          width: 16px;
+          height: 16px;
+          border-radius: 50%;
+          background: rgb(0, 160, 220);
+          transition: all .4s;
         }
       }
     }

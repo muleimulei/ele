@@ -26,6 +26,7 @@
         } else {
           this.food.count++
         }
+        this.$root.eventHub.$emit('cart.add', event.target)
       },
       decreaseCart () {
         this.food.count--
@@ -41,18 +42,41 @@
       display: inline-block;
       padding: 6px;
       transition: all .5s linear;
-      &.move-enter, &.move-leave{
-        opacity: 0;
+      &.move-enter{
         transform: translate3d(24px, 0, 0);
+        .inner{
+          transform: rotate(180deg);
+          opacity: 0;
+        }
       }
       &.move-enter-to{
         opacity: 1;
         transform: translate3d(0, 0, 0);
+        .inner{
+          transform: rotate(0);
+          opacity: 1;
+        }
+      }
+      &.move-leave{
+        transform: translate3d(0, 0, 0);
+        .inner{
+          transform: rotate(0);
+          opacity: 1;
+        }
+      }
+      &.move-leave-to{
+        transform: translate3d(24px, 0, 0);
+        .inner{
+          opacity: 0;
+          transform: rotate(180deg);
+        }
       }
       .inner{
         line-height: 24px;
         font-size: 24px;
         color: rgb(0, 160, 220);
+        transition: all .4s linear;
+        transform: rotate(0);
       }
     }
     .cart-count{
@@ -61,7 +85,7 @@
       vertical-align: top;
       text-align: center;
       line-height: 36px;
-      font-size: 12px;
+      font-size: 14px;
       color: rgb(147, 153, 153);
     }
     .cart-add{

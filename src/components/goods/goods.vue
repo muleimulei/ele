@@ -37,7 +37,7 @@
         </li>
       </ul>
     </div>
-    <shopCart :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice" :selectFoods="selectFoods"></shopCart>
+    <shopCart ref='shopcart' :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice" :selectFoods="selectFoods"></shopCart>
   </div>
 </template>
 
@@ -73,6 +73,10 @@
           })
         }
       })
+
+      this.$root.eventHub.$on('cart.add', (target) => {
+        this._drop(target)
+      })
     },
     computed: {
       currentIndex () {
@@ -98,6 +102,9 @@
       }
     },
     methods: {
+      _drop (target) {
+        this.$refs.shopcart.drop(target)
+      },
       _initScroll () {
         this.menuScroll = new BScroll(this.$refs.menuWrapper, {
           click: true
