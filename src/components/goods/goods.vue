@@ -28,30 +28,35 @@
                   <span>￥{{food.price}}</span>
                   <span v-show="food.oldPrice">￥{{food.oldPrice}}</span>
                 </div>
+                <div class="cartcontrol-wrapper">
+                  <cartControl :food = "food"></cartControl>
+                </div>
               </div>
             </li>
           </ul>
         </li>
       </ul>
     </div>
-    <shopCart></shopCart>
+    <shopCart :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice" :selectFoods="selectFoods"></shopCart>
   </div>
 </template>
 
 <script>
   import BScroll from 'better-scroll'
   import shopCart from '../shopcart/shopcart'
+  import cartControl from '../cartcontrol/cartcontrol'
   const ERR_OK = 0
   export default{
     props: {
       seller: Object
     },
     components: {
-      shopCart
+      shopCart,
+      cartControl
     },
     data () {
       return {
-        goods: null,
+        goods: [],
         classMap: ['decrease', 'discount', 'special', 'invoice', 'guarantee'],
         listHeight: [0],
         scrollY: 0
@@ -59,10 +64,8 @@
     },
     created () {
       this.$http.get('/api/goods').then((response) => {
-        // console.log(response)
         response = response.data
         if (response.errno === ERR_OK) {
-          // console.log(response.data)
           this.goods = response.data
           this.$nextTick(() => {
             this._initScroll()
@@ -81,6 +84,17 @@
           }
         }
         return 0
+      },
+      selectFoods () {
+        let select = []
+        this.goods.forEach((good) => {
+          good.foods.forEach((item) => {
+            if (item.count) {
+              select.push(item)
+            }
+          })
+        })
+        return select
       }
     },
     methods: {
@@ -89,7 +103,8 @@
           click: true
         })
         this.foodsScroll = new BScroll(this.$refs.foodsWrapper, {
-          probeType: 3
+          probeType: 3,
+          click: true
         })
         this.foodsScroll.on('scroll', (pos) => {
           this.scrollY = Math.abs(Math.round(pos.y))
@@ -114,7 +129,7 @@
   }
 </script>
 
-<style lang='less' scoped>
+<style lang='less'>
   @import '../../common/less/mixin';
   .goods{
     display: flex;
@@ -237,6 +252,12 @@
                 font-size: 10px;
                 color: rgb(147, 153, 159);
               }
+            }
+            .cartcontrol-wrapper{
+              position: absolute;
+              right: 0;
+              bottom: 5px;
+              // height: 200px;
             }
           }
         }
