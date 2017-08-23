@@ -17,7 +17,6 @@
       food: Object
     },
     created () {
-
     },
     methods: {
       addCart () {
