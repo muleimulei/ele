@@ -25,7 +25,10 @@
         } else {
           this.food.count++
         }
-        this.$root.eventHub.$emit('cart.add', event.target)
+        this.$nextTick(() => {
+          //  异步执行下落动画
+          this.$root.eventHub.$emit('cart.add', event.target)
+        })
       },
       decreaseCart () {
         this.food.count--

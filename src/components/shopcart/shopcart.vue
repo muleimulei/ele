@@ -11,11 +11,11 @@
         <div class="price" :class="{'highlight': totalPrice > 0}">
           ￥{{totalPrice}}
         </div>
-        <div class="desc">
+        <div class="desc" @click="togglelist">
           另需配送费{{deliveryPrice}}￥
         </div>
       </div>
-      <div class="content-right">
+      <div class="content-right" @click="pay">
         <div class="pay" :class="totalPrice < minPrice ? 'not-enough' : 'enough'">
           {{payDesc}}
         </div>
@@ -28,10 +28,36 @@
         </div>
       </transition-group>
     </div>
+    <transition name="fold-transition">
+      <div class="shopcart-list" v-show="listshow">
+        <div class="list-header">
+          <h1 class="title">购物车</h1>
+          <span class="empty" @click="empty">清空</span>
+        </div>
+        <div class="list-content" ref="listContent">
+          <ul>
+            <li class="food" v-for="food in selectFoods">
+              <span class="name">{{food.name}}</span>
+              <div class="price">
+                <span>￥{{food.price * food.count}}</span>
+              </div>
+              <div class="cartcontrol-wrapper">
+                <cartcontrol :food = 'food'></cartcontrol>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </transition>
+    <transition name="fade">
+      <div class="list-mask" v-show="listshow" @click="togglelist"></div>
+    </transition>
   </div>
 </template>
 
 <script>
+import cartcontrol from '../cartcontrol/cartcontrol'
+import BScroll from 'better-scroll'
 export default{
   props: {
     minPrice: Number,
@@ -42,6 +68,9 @@ export default{
         return []
       }
     }
+  },
+  components: {
+    cartcontrol
   },
   data () {
     return {
@@ -62,7 +91,8 @@ export default{
           show: false
         }
       ],
-      dropBalls: []
+      dropBalls: [],
+      listshow: false
     }
   },
   computed: {
@@ -78,6 +108,9 @@ export default{
       this.selectFoods.forEach((food) => {
         count += food.count
       })
+      if (count === 0) {
+        this.listshow = false
+      }
       return count
     },
     payDesc () {
@@ -141,12 +174,38 @@ export default{
           return
         }
       }
+    },
+    togglelist () {
+      if (!this.totalCount) {
+        return
+      }
+      this.listshow = !this.listshow
+      if (this.listshow) {
+        if (!this.scroll) {
+          this.$nextTick(() => {
+            this.scroll = new BScroll(this.$refs.listContent, {
+              click: true
+            })
+          })
+        }
+      }
+    },
+    empty () {
+      this.selectFoods.forEach((food) => {
+        food.count = 0
+      })
+    },
+    pay () {
+      if (this.totalPrice > this.minPrice) {
+        alert(this.totalPrice)
+      }
     }
   }
 }
 </script>
 
 <style lang='less' scoped>
+  @import '../../common/less/mixin';
   .shopcart{
     position: fixed;
     bottom: 0;
@@ -217,6 +276,7 @@ export default{
           margin: 12px 0 12px 12px;
           line-height: 24px;
           font-size: 16px;
+          flex: 1;
         }
       }
       .content-right{
@@ -254,6 +314,79 @@ export default{
             transition: all .5s linear;
           }
         }
+      }
+    }
+    .shopcart-list{
+      position: absolute;
+      transition: all .5s;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: -1;
+      transform: translate3d(0, -100%, 0);
+      &.fold-transition-enter, &.fold-transition-leave-to{
+        transform: translate3d(0, 0, 0);
+      }
+      &.fold-transition-leave{
+        transform: translate3d(0, -100%, 0);
+      }
+      .list-header{
+        height: 40px;
+        line-height: 40px;
+        padding: 0 18px;
+        background: #f3f5f7;
+        border-bottom: 1px solid rgba(7, 17, 27, .1);
+        .title{
+          float: left;
+          font-size: 14px;
+        }
+        .empty{
+          float: right;
+          font-size: 12px;
+          color: rgb(0, 160, 220);
+        }
+      }
+      .list-content{
+        padding: 0 18px;
+        max-height: 217px;
+        background: #fff;
+        overflow: hidden;
+      }
+      .food{
+        padding: 12px 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        .border-1px(rgba(7, 17, 27, .1));
+        .name{
+          margin-right: auto;
+          font-size: 14px;
+          line-height: 24px;
+          color: rgb(7, 17, 27);
+        }
+        .price{
+          font-size: 14px;
+          font-weight: 700;
+          color: rgb(240, 20, 20);
+        }
+      }
+    }
+    .list-mask{
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+      backdrop-filter: blur(10px);
+      filter: blur(10px);
+      background-color: rgba(7, 17, 27, .6);
+      transition: all .5s;
+      &.fade-enter, &.fade-leave-to{
+        opacity: 0;
+      }
+      &.fade-enter-to, &.fade-leave{
+        opacity: 1;
       }
     }
   }
