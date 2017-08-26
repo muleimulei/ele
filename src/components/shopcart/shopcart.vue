@@ -212,6 +212,7 @@ export default{
     height: 48px;
     width: 100%;
     background: #000;
+    z-index: 60;
     .content{
       display: flex;
       height: inherit;

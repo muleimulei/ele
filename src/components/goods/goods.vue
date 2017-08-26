@@ -14,7 +14,7 @@
         <li v-for="item in goods" class="food-list food-list-hook">
           <h1 class="title">{{item.name}}</h1>
           <ul>
-            <li v-for="food in item.foods" class="food-item">
+            <li v-for="food in item.foods" class="food-item" @click="selectFood(food, $event)">
               <div class="icon">
                 <img :src="food.icon" alt="" width="57" height="57">
               </div>
@@ -38,6 +38,7 @@
       </ul>
     </div>
     <shopCart :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice" :selectFoods="selectFoods"></shopCart>
+    <food ref="food" :food="selectedfood"></food>
   </div>
 </template>
 
@@ -45,6 +46,7 @@
   import BScroll from 'better-scroll'
   import shopCart from '../shopcart/shopcart'
   import cartControl from '../cartcontrol/cartcontrol'
+  import food from '../food/food'
   const ERR_OK = 0
   export default{
     props: {
@@ -52,14 +54,16 @@
     },
     components: {
       shopCart,
-      cartControl
+      cartControl,
+      food
     },
     data () {
       return {
         goods: [],
         classMap: ['decrease', 'discount', 'special', 'invoice', 'guarantee'],
         listHeight: [0],
-        scrollY: 0
+        scrollY: 0,
+        selectedfood: {}
       }
     },
     created () {
@@ -124,6 +128,10 @@
         let foodList = this.$refs.foodsWrapper.getElementsByClassName('food-list-hook')
         let ele = foodList[index]
         this.foodsScroll.scrollToElement(ele, 300)
+      },
+      selectFood (food, event) {
+        this.selectedfood = food
+        this.$refs.food.show()
       }
     }
   }
@@ -214,6 +222,7 @@
           .content{
             margin-left: 10px;
             flex:1;
+            position: relative;
             .name{
               margin-top: 2px;
               font-size: 14px;
@@ -256,8 +265,7 @@
             .cartcontrol-wrapper{
               position: absolute;
               right: 0;
-              bottom: 5px;
-              // height: 200px;
+              bottom: -15px;
             }
           }
         }
