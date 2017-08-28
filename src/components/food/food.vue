@@ -24,32 +24,48 @@
             <cartcontrol :food="food"></cartcontrol>
           </div>
         </div>
-      </div>
-      <split v-if="food.info"></split>
-      <div class="info" v-if="food.info">
-        <h1 class="title">商品介绍</h1>
-        <div class="text">{{food.info}}</div>
-      </div>
+        <split v-if="food.info"></split>
+        <div class="info" v-if="food.info">
+          <h1 class="title">商品介绍</h1>
+          <div class="text">{{food.info}}</div>
+        </div>
+        <div class="rating">
+          <h1 class="title">商品评价</h1>
+          <ratingselect :only-content="onlyContent" :ratings="food.ratings" :desc="desc" :select-type="selectType"></ratingselect>
+        </div>
+        </div>
     </div>
   </transition>
 </template>
 
 <script>
+  const POSITIVE = 0
+  const NEGATIVE = 1
+  const ALL = 2
   import BScroll from 'better-scroll'
   import cartcontrol from '../cartcontrol/cartcontrol'
   import split from '../split/split'
   import Vue from 'vue'
+  import ratingselect from '../ratingselect/ratingselect'
   export default{
     props: {
       food: Object
     },
     components: {
       cartcontrol,
-      split
+      split,
+      ratingselect
     },
     data () {
       return {
-        showFlag: false
+        showFlag: false,
+        selectType: ALL,
+        onlyContent: true,
+        desc: {
+          all: '全部',
+          positive: '推荐',
+          negative: '吐槽'
+        }
       }
     },
     methods: {
@@ -109,6 +125,7 @@
     }
     .content{
       padding: 18px;
+      position: relative;
       .title{
         line-height: 14px;
         margin-bottom: 8px;
@@ -176,6 +193,15 @@
         line-height: 24px;
         padding-left: 8px;
         font-size: 12px;
+      }
+    }
+    .rating{
+      padding-top: 18px;
+      .title{
+        line-height: 14px;
+        margin-left: 18px;
+        font-size: 14px;
+        color: rgb(7, 17, 27);
       }
     }
   }
