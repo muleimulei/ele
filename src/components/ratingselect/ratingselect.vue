@@ -1,11 +1,11 @@
 <template>
   <div class="ratingselect">
     <div class="rating-type">
-      <span class="block positive" :class="{active: selectType===2}">{{desc.all}}<span class="count">78</span> </span>
-      <span class="block positive" :class="{active: selectType===0}">{{desc.positive}}<span class="count">78</span></span>
-      <span class="block negative" :class="{active: selectType===1}">{{desc.negative}}<span class="count">78</span></span>
+      <span class="block positive" @click="select(2)" :class="{active: sType===2}">{{desc.all}}<span class="count">{{ratings.length}}</span></span>
+      <span class="block positive" @click="select(0)" :class="{active: sType===0}">{{desc.positive}}<span class="count">{{positives.length}}</span></span>
+      <span class="block negative" @click="select(1)" :class="{active: sType===1}">{{desc.negative}}<span class="count">{{negatives.length}}</span></span>
     </div>
-    <div class="switch">
+    <div class="switch" :class="{on: oContent}" @click="toggleContent">
       <span class="icon-check_circle"></span>
       <span class="text">只看有内容的评价</span>
     </div>
@@ -42,6 +42,33 @@
           }
         }
       }
+    },
+    data () {
+      return {
+        sType: this.selectType,
+        oContent: this.onlyContent
+      }
+    },
+    computed: {
+      positives () {
+        return this.ratings.filter((rating) => {
+          return rating.rateType === POSITIVE
+        })
+      },
+      negatives () {
+        return this.ratings.filter((rating) => {
+          return rating.rateType === NEGATIVE
+        })
+      }
+    },
+    methods: {
+      select (num) {
+        this.sType = num
+        this.$emit('ratingtype.select', num)
+      },
+      toggleContent () {
+        this.oContent = !this.oContent
+      }
     }
   }
 </script>
@@ -75,6 +102,28 @@
             background: rgb(77, 85, 93);
           }
         }
+      }
+    }
+    .switch{
+      padding: 12px 18px;
+      line-height: 24px;
+      border-bottom: 1px solid rgba(7, 17, 27, .1);
+      color: rgb(147, 153, 159);
+      font-size: 0;
+      &.on{
+        .icon-check_circle{
+          color: rgb(0, 160, 220);
+        }
+      }
+      .icon-check_circle{
+        margin-right: 4px;
+        font-size: 24px;
+        vertical-align: top;
+        display: inline-block;
+      }
+      .text{
+        vertical-align: top;
+        font-size: 12px;
       }
     }
   }
