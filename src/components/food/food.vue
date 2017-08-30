@@ -63,6 +63,8 @@
   import split from '../split/split'
   import Vue from 'vue'
   import ratingselect from '../ratingselect/ratingselect'
+  import {formatDate} from 'common/js/date.js'
+
   Vue.filter('formDate', (time) => {
     let date = new Date(time)
     return formatDate(date, 'yyyy-MM-dd hh:mm')
