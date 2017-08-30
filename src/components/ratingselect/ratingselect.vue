@@ -64,10 +64,11 @@
     methods: {
       select (num) {
         this.sType = num
-        this.$emit('ratingtype.select', num)
+        this.$emit('typechange', num)
       },
       toggleContent () {
         this.oContent = !this.oContent
+        this.$emit('contentchange', this.oContent)
       }
     }
   }
