@@ -25,10 +25,10 @@
         </div>
       </div>
       <split></split>
-      <ratingselect :ratings="ratings" :select-type="selectType" :only-content="onlyContent" :desc="desc"></ratingselect>
+      <ratingselect v-on:contentchange="contentChange" v-on:typechange="typeChange" :ratings="ratings" :select-type="selectType" :only-content="onlyContent" :desc="desc"></ratingselect>
       <div class="rating-wrapper">
         <ul>
-          <li v-for="rating in ratings" class="rating-item">
+          <li v-for="rating in ratings" class="rating-item" v-show="needShow(rating.rateType, rating.text)">
             <div class="avatar">
               <img width="28" height="28" :src="rating.avatar" alt="">
             </div>
@@ -41,7 +41,7 @@
               <p class="text">{{rating.text}}</p>
               <div class="recommend" v-show="rating.recommend && rating.recommend.length > 0">
                 <span class="icon-thumb_up"></span>
-                <span v-for="item in rating.recommend">{{item}}</span>
+                <span v-for="item in rating.recommend" class="item">{{item}}</span>
               </div>
               <div class="time">
                 {{rating.rateTime | formDate}}
@@ -104,6 +104,30 @@
           })
         }
       })
+    },
+    methods: {
+      needShow (type, text) {
+        if (this.onlyContent && !text) {
+          return false
+        }
+        if (this.selectType === ALL) {
+          return true
+        } else {
+          return type === this.selectType
+        }
+      },
+      typeChange (num) {
+        this.selectType = num
+        this.$nextTick(() => {
+          this.scroll.refresh()
+        })
+      },
+      contentChange (content) {
+        this.onlyContent = content
+        this.$nextTick(() => {
+          this.scroll.refresh()
+        })
+      }
     }
   }
 </script>
@@ -206,6 +230,55 @@
             line-height: 12px;
             font-size: 10px;
             color: rgb(7, 17, 27);
+          }
+          .star-wrapper{
+            margin-bottom: 6px;
+            font-size: 0;
+            .star{
+              display: inline-block;
+              margin-right: 6px;
+              vertical-align: top;
+            }
+            .delivery{
+              display: inline-block;
+              vertical-align: top;
+              line-height: 12px;
+              font-size: 10px;
+              color: rgb(147, 153, 147);
+            }
+          }
+          .text{
+            margin-bottom: 8px;
+            line-height: 18px;
+            color: rgb(7, 17, 17);
+            font-size: 12px;
+          }
+          .recommend{
+            line-height: 16px;
+            font-size: 0;
+            .icon-thumb_up, .item{
+              display: inline-block;
+              margin: 0 8px 4px 0;
+              font-size: 12px;
+            }
+            .icon-thumb_up{
+              color: rgb(0, 160, 220);
+            }
+            .item{
+              padding: 0 6px;
+              border: 1px solid rgba(7, 17, 27, .1);
+              border-radius: 1px;
+              color: rgb(147, 153, 159);
+              background: #fff;
+            }
+          }
+          .time{
+            position: absolute;
+            top: 0;
+            right: 0;
+            line-height: 12px;
+            font-size: 10px;
+            color: rgb(7, 17, 18);
           }
         }
       }
