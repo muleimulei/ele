@@ -20,6 +20,7 @@
 
 <script>
 import appHead from './components/header/header.vue'
+import {urlParse} from 'common/js/util'
 const ERR_OK = 0
 export default {
   name: 'app',
@@ -28,14 +29,20 @@ export default {
   },
   data () {
     return {
-      seller: {}
+      seller: {
+        id: (function () {
+          let param = urlParse()
+          return param.id
+        })()
+      }
     }
   },
   created () {
-    this.$http.get('/api/sellers').then((response) => {
+    this.$http.get('/api/sellers?id=' + this.seller.id).then((response) => {
       response = response.data
       if (response.errno === ERR_OK) {
-        this.seller = response.data
+        this.seller = Object.assign({}, this.seller, response.data)
+        console.log(this.seller.id)
       }
     })
   }

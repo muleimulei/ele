@@ -74,6 +74,7 @@
   import star from '../star/star'
   import split from '../split/split'
   import BScroll from 'better-scroll'
+  import {saveToLocal, loadFromLocal} from 'common/js/store'
   export default{
     props: {
       seller: Object
@@ -90,7 +91,7 @@
     data () {
       return {
         classMap: ['decrease', 'discount', 'special', 'invoice', 'guarantee'],
-        favorite: false
+        favorite: loadFromLocal(this.seller.id, 'favorite')
       }
     },
     watch: {
@@ -106,6 +107,7 @@
     methods: {
       togglefavorite () {
         this.favorite = !this.favorite
+        saveToLocal(this.seller.id, 'favorite', this.favorite)
       },
       _initScroll () {
         this.$nextTick(() => {
